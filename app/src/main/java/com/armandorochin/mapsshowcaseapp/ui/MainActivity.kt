@@ -35,29 +35,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupMap()
-        //setupListeners()
-    }
 
-    private fun setupListeners() {
-        with(binding){
-            if(::map.isInitialized){
-                map.setOnMapClickListener {
-                    if(mainViewModel.coordenates.start.isNullOrEmpty()){
-                        mainViewModel.coordenates.start = mainViewModel.coordenates.getCoordenateFormatted(it)
-                    }else if (mainViewModel.coordenates.end.isNullOrEmpty()){
-                        mainViewModel.coordenates.end = mainViewModel.coordenates.getCoordenateFormatted(it)
-
-                        CoroutineScope(Dispatchers.IO).launch {
-                            createRoute(mainViewModel.getRoute())
-                        }
-                    }else{
-                        mainViewModel.coordenates.start = null
-                        mainViewModel.coordenates.end = null
-                    }
-                }
-            }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionRequest()
         }
+
+        setupMap()
     }
 
     private fun setupMap() {
@@ -65,16 +55,6 @@ class MainActivity : AppCompatActivity() {
         mapFragment.getMapAsync {googleMap ->
             map = googleMap
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                locationPermissionRequest()
-            }
             map.isMyLocationEnabled = true
 
             if(::map.isInitialized){
