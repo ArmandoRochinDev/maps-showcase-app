@@ -21,6 +21,11 @@ Crer el archivo `google_maps_api.xml` en la ruta `res/values` con el siguiente c
     </string>
 </resources>
 ```
+## Screenshots
+<p float="left">
+  <img src="https://firebasestorage.googleapis.com/v0/b/fir-showcase-app.appspot.com/o/screenshots%2Fmaps-showcase-app%2F01.png?alt=media&token=7c3cc9fd-7c02-4f53-b0f4-3b3dddafdb99" width="250" />
+</p>
+
 
 ## Licence
     MIT License
